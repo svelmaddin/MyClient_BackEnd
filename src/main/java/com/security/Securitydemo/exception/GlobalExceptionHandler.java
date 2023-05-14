@@ -31,4 +31,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(exception.getHttpStatus())
                 .body(errors);
     }
+
+
 }

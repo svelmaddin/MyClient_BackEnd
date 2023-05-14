@@ -2,7 +2,6 @@ package com.security.Securitydemo.service;
 
 import com.security.Securitydemo.dto.UserDto;
 import com.security.Securitydemo.exception.GenericException;
-import com.security.Securitydemo.model.Role;
 import com.security.Securitydemo.model.User;
 import com.security.Securitydemo.repository.UserRepository;
 import com.security.Securitydemo.request.RegisterRequest;
@@ -25,7 +24,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
-        user.setRole(Role.valueOf("USER"));
         userRepository.save(user);
     }
 
@@ -33,7 +31,6 @@ public class UserService {
         var userDb = findUserByUsername(username);
         return UserDto.builder()
                 .username(userDb.getUsername())
-                .role(userDb.getRole())
                 .build();
     }
 

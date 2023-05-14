@@ -1,5 +1,7 @@
 package com.security.Securitydemo.config;
 
+import com.security.Securitydemo.config.JwtAuthenticationEntryPoint;
+import com.security.Securitydemo.config.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,13 +38,12 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .cors().and()
-                .authorizeRequests((auth) -> {
-                    auth.requestMatchers("/","/api/register","/api/login").permitAll();
-                    auth.requestMatchers("/api/auth/login").permitAll();
-                    auth.requestMatchers("/api/admin").hasAuthority("ADMIN");
-                    auth.requestMatchers("/api/user").hasAnyAuthority("ADMIN", "USER");
-                    auth.anyRequest().authenticated();
-                })
+                .authorizeRequests()
+                .requestMatchers("/api/login" ,"/api/loginGoogle" ,"/api/register").permitAll()
+                .anyRequest()
+                .authenticated().and()
+                .oauth2Login()
+                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler)

@@ -6,11 +6,17 @@ import com.security.Securitydemo.request.LoginRequest;
 import com.security.Securitydemo.request.RegisterRequest;
 import com.security.Securitydemo.service.AuthService;
 import com.security.Securitydemo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
 @RequestMapping("/api")
 @RestController
+@Slf4j
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
@@ -27,12 +33,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
-    public void register(@RequestBody RegisterRequest request){
+    public void register(@RequestBody RegisterRequest request) {
         userService.createUser(request);
     }
-    @GetMapping("/user")
-    public String admin(){
-        return "admin";
+
+    @GetMapping("/loginGoogle")
+    public Map<String, Object> currentUser(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
     }
+
 
 }
