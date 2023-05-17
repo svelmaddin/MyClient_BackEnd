@@ -15,23 +15,23 @@ public class Aspect {
 
 
     @Before("execution(* com.security.Securitydemo.service.*.*(..))")
-    void beforeService(JoinPoint joinPoint){
-        log.info(joinPoint+"args: {}",joinPoint.getArgs());
+    void beforeService(JoinPoint joinPoint) {
+        log.info(joinPoint + "args: {}", joinPoint.getArgs());
     }
 
-    @AfterReturning(value = "execution(* com.security.Securitydemo.service.*.*(..))",returning = "returnValue")
-    void afterService(JoinPoint joinPoint,Object returnValue){
-        log.info(joinPoint+"return: {}",returnValue);
+    @AfterReturning(value = "execution(* com.security.Securitydemo.service.*.*(..))", returning = "returnValue")
+    void afterService(JoinPoint joinPoint, Object returnValue) {
+        log.info(joinPoint + "return: {}", returnValue);
     }
 
     @Before("execution(* com.security.Securitydemo.controller.*.*(..))")
-    void beforeController(JoinPoint joinPoint){
-        log.info(joinPoint+"args: {}",joinPoint.getArgs());
+    void beforeController(JoinPoint joinPoint) {
+        log.info(joinPoint + "args: {}", joinPoint.getArgs());
     }
 
-    @AfterReturning(value = "execution(* com.security.Securitydemo.controller.*.*(..))",returning = "returnValue")
-    void afterController(JoinPoint joinPoint,Object returnValue){
-        log.info(joinPoint+"return: {}",returnValue);
+    @AfterReturning(value = "execution(* com.security.Securitydemo.controller.*.*(..))", returning = "returnValue")
+    void afterController(JoinPoint joinPoint, Object returnValue) {
+        log.info(joinPoint + "return: {}", returnValue);
     }
 
 }

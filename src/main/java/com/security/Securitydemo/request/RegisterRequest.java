@@ -12,6 +12,5 @@ public class RegisterRequest {
     private String email;
     @NotEmpty
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]{6,10}$" ,message = "Invalid password!")
     private String password;
 }
