@@ -84,24 +84,22 @@ public class UserService {
     }
 
     private void emailCheck(String email) {
-        String emailRegex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         if (userRepository.existsUserByEmail(email)) {
             throw new DuplicateResourceException(TAKEN_EMAIL);
         }
         if (email.isEmpty()) {
             throw new InvalidDataException(EMAIL_NOT_NULL);
         }
-        if (!email.matches(emailRegex)) {
+        if (!email.matches(EMAIL_REGEX)) {
             throw new InvalidDataException(INVALID_EMAIL);
         }
     }
 
     private void passwordCheck(String password) {
-        String passwordRegex = "^[a-zA-Z0-9]{6,10}$";
         if (password.isEmpty()) {
             throw new InvalidDataException(PASSWORD_NOT_NULL);
         }
-        if (!password.matches(passwordRegex)) {
+        if (!password.matches(PASSWORD_REGEX)) {
             throw new InvalidDataException(INVALID_PASSWORD);
         }
     }

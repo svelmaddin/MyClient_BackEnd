@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import static com.security.Securitydemo.util.ErrorMessage.WRONG_USER_DETAIL;
+
 @Service
 public class AuthService {
     private final UserService userService;
@@ -35,7 +37,7 @@ public class AuthService {
                     .userDto(userService.getUser(loginRequest.getUsername()))
                     .build();
         }catch (Exception e){
-            throw  new LoginException("Username or Password is wrong!");
+            throw  new LoginException(WRONG_USER_DETAIL);
         }
     }
 
