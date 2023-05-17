@@ -20,11 +20,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserConverter converter;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserConverter converter) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       UserConverter converter) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.converter = converter;
     }
+
 
     public void createUser(RegisterRequest request) {
         emailAndPasswordCheck(request);
@@ -40,22 +43,19 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public UserDto findUserById(Long id) {
-        User fromDb = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with given id: " + id));
+        User fromDb = userFromDb(id);
         return converter.userModelToDto(fromDb);
     }
 
-    public UserDto updateUser(UserRequest userRequest, Long id) {
-        User fromDb = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with given id: " + id));
 
-        if (userRequest.getName() != null
-                && !userRequest.getName().equals(fromDb.getName())) {
+    public UserDto updateUser(UserRequest userRequest, Long id) {
+        User fromDb = userFromDb(id);
+        if (userRequest.getName() != null && !userRequest.getName().equals(fromDb.getName())) {
             fromDb.setName(userRequest.getName());
         }
-        if (userRequest.getSurname() != null
-                && !userRequest.getSurname().equals(fromDb.getSurname())) {
+        if (userRequest.getSurname() != null && !userRequest.getSurname().equals(fromDb.getSurname())) {
             fromDb.setSurname(userRequest.getSurname());
         }
         if (userRequest.getUsername() != null && !userRequest.getUsername().equals(fromDb.getUsername())) {
@@ -65,13 +65,37 @@ public class UserService {
         return converter.userModelToDto(fromDb);
     }
 
-    public void updatePassword(Long id, UserChangePassword request) {
-        User fromDb = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with given id: " + id));
 
+    public void updatePassword(Long id, UserChangePassword request) {
+        User fromDb = userFromDb(id);
         if (request.getPassword() != null) {
             fromDb.setPassword(passwordEncoder.encode(request.getPassword()));
         }
+    }
+
+    private void emailAndPasswordCheck(RegisterRequest request) {
+        String emailRegex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        String passwordRegex = "^[a-zA-Z0-9]{6,10}$";
+        if (userRepository.existsUserByEmail(request.getEmail())) {
+            throw new DuplicateResourceException("Email already taken");
+        }
+        if (request.getEmail().isEmpty()) {
+            throw new InvalidDataException("User Email can not be empty!");
+        }
+        if (!request.getEmail().matches(emailRegex)) {
+            throw new InvalidDataException("Invalid email!");
+        }
+        if (request.getPassword().isEmpty()) {
+            throw new InvalidDataException("User password can not be empty!");
+        }
+        if (!request.getPassword().matches(passwordRegex)) {
+            throw new InvalidDataException("Invalid password!");
+        }
+    }
+
+    private User userFromDb(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with given id: " + id));
     }
 
     protected User findUserByUsername(String username) {
@@ -84,26 +108,6 @@ public class UserService {
         return UserDto.builder()
                 .username(userDb.getUsername())
                 .build();
-    }
-
-    private void emailAndPasswordCheck(RegisterRequest request) {
-        String emailRegex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-        String passwordRegex = "^[a-zA-Z0-9]{6,10}$";
-        if (userRepository.existsUserByEmail(request.getEmail())) {
-            throw new DuplicateResourceException("Email already taken");
-        }
-        if (request.getEmail().isEmpty()) {
-            throw new InvalidDataException("User Email can not be empty!");
-        }
-        if (!request.getEmail().matches(emailRegex)){
-            throw new InvalidDataException("Invalid email!");
-        }
-        if (request.getPassword().isEmpty()) {
-            throw new InvalidDataException("User password can not be empty!");
-        }
-        if (!request.getPassword().matches(passwordRegex)){
-            throw new InvalidDataException("Invalid password!");
-        }
     }
 
 }
