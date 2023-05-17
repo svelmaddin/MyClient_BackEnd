@@ -6,10 +6,10 @@ import com.security.Securitydemo.request.LoginRequest;
 import com.security.Securitydemo.request.RegisterRequest;
 import com.security.Securitydemo.service.AuthService;
 import com.security.Securitydemo.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

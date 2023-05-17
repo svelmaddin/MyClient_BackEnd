@@ -3,7 +3,7 @@ package com.security.Securitydemo.service;
 import com.security.Securitydemo.dto.UserConverter;
 import com.security.Securitydemo.dto.UserDto;
 import com.security.Securitydemo.exception.DuplicateResourceException;
-import com.security.Securitydemo.exception.NotNullException;
+import com.security.Securitydemo.exception.InvalidDataException;
 import com.security.Securitydemo.exception.UserNotFoundException;
 import com.security.Securitydemo.model.Role;
 import com.security.Securitydemo.model.User;
@@ -87,14 +87,22 @@ public class UserService {
     }
 
     private void emailAndPasswordCheck(RegisterRequest request) {
+        String emailRegex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        String passwordRegex = "^[a-zA-Z0-9]{6,10}$";
         if (userRepository.existsUserByEmail(request.getEmail())) {
-            throw new DuplicateResourceException("email already taken");
+            throw new DuplicateResourceException("Email already taken");
         }
         if (request.getEmail().isEmpty()) {
-            throw new NotNullException("User Email can not be empty!");
+            throw new InvalidDataException("User Email can not be empty!");
+        }
+        if (!request.getEmail().matches(emailRegex)){
+            throw new InvalidDataException("Invalid email!");
         }
         if (request.getPassword().isEmpty()) {
-            throw new NotNullException("User password can not be empty!");
+            throw new InvalidDataException("User password can not be empty!");
+        }
+        if (!request.getPassword().matches(passwordRegex)){
+            throw new InvalidDataException("Invalid password!");
         }
     }
 

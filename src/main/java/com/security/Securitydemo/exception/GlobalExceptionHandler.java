@@ -47,12 +47,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NotNullException.class)
-    public ResponseEntity<?> notNullException(NotNullException exception) {
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<?> notNullException(InvalidDataException exception) {
         List<String> detail = new ArrayList<>();
         detail.add(exception.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse("Field can not be null ", detail);
+        ErrorResponse errorResponse = new ErrorResponse("Data type exceptions ", detail);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
