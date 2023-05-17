@@ -1,36 +1,58 @@
 package com.security.Securitydemo.exception;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(err ->
-                errors.put(err.getField(), err.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
+    @ExceptionHandler(JwtCanNotVerifyException.class)
+    public ResponseEntity<?> jwtVerifyException(JwtCanNotVerifyException exception) {
+        List<String> detail = new ArrayList<>();
+        detail.add(exception.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse("JwtVerifyException!", detail);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(GenericException.class)
-    public ResponseEntity<?> handleException(GenericException exception) {
-        Map<String, Object> errors = new HashMap<>();
-        errors.put("message", exception.getErrorCode());
-        return ResponseEntity
-                .status(exception.getHttpStatus())
-                .body(errors);
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> userNotFoundException(UserNotFoundException exception) {
+        List<String> detail = new ArrayList<>();
+        detail.add(exception.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse("User not Found!", detail);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<?> duplicateResourceException(DuplicateResourceException exception) {
+        List<String> detail = new ArrayList<>();
+        detail.add(exception.getMessage());
 
+        ErrorResponse errorResponse = new ErrorResponse("Duplicate  resource ", detail);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<?> loginException(LoginException exception) {
+        List<String> detail = new ArrayList<>();
+        detail.add(exception.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse("Login Process exception", detail);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotNullException.class)
+    public ResponseEntity<?> notNullException(NotNullException exception) {
+        List<String> detail = new ArrayList<>();
+        detail.add(exception.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse("Field can not be null ", detail);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }

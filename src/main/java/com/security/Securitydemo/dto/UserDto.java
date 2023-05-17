@@ -7,6 +7,9 @@ import lombok.Builder;
 public record UserDto(
         String email,
         String username,
+        String name,
+        String profileImageId,
+        String surname,
         Role role
 ) {
 }

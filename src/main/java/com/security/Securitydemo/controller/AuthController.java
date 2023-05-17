@@ -37,10 +37,6 @@ public class AuthController {
         userService.createUser(request);
     }
 
-    @GetMapping("/loginGoogle")
-    public Map<String, Object> currentUser(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
-    }
 
 
 }

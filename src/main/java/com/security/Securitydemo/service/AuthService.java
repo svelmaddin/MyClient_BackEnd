@@ -1,10 +1,9 @@
 package com.security.Securitydemo.service;
 
 import com.security.Securitydemo.dto.TokenResponseDto;
-import com.security.Securitydemo.exception.GenericException;
+import com.security.Securitydemo.exception.LoginException;
 import com.security.Securitydemo.request.LoginRequest;
 import com.security.Securitydemo.util.TokenGenerator;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,10 +35,7 @@ public class AuthService {
                     .userDto(userService.getUser(loginRequest.getUsername()))
                     .build();
         }catch (Exception e){
-            throw  GenericException.builder()
-                    .errorMessage("user not found")
-                    .httpStatus(HttpStatus.NOT_FOUND)
-                    .build();
+            throw  new LoginException("Username or Password is wrong!");
         }
     }
 

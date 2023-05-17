@@ -5,7 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.security.Securitydemo.exception.GenericException;
+import com.security.Securitydemo.exception.JwtCanNotVerifyException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -40,8 +40,8 @@ public class TokenGenerator {
         try {
             return verifier.verify(token);
         } catch (Exception e) {
-            throw GenericException.builder().httpStatus(HttpStatus.BAD_REQUEST)
-                    .build();
+            e.printStackTrace();
+            throw new JwtCanNotVerifyException("");
         }
 
     }
