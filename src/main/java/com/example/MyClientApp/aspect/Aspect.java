@@ -1,5 +1,4 @@
-package com.security.Securitydemo.aspect;
-
+package com.example.MyClientApp.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -14,22 +13,22 @@ import org.springframework.stereotype.Component;
 public class Aspect {
 
 
-    @Before("execution(* com.security.Securitydemo.service.*.*(..))")
+    @Before("execution(* com.example.MyClientApp.service.*.*(..))")
     void beforeService(JoinPoint joinPoint) {
         log.info(joinPoint + "args: {}", joinPoint.getArgs());
     }
 
-    @AfterReturning(value = "execution(* com.security.Securitydemo.service.*.*(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.example.MyClientApp.service.*.*(..))", returning = "returnValue")
     void afterService(JoinPoint joinPoint, Object returnValue) {
         log.info(joinPoint + "return: {}", returnValue);
     }
 
-    @Before("execution(* com.security.Securitydemo.controller.*.*(..))")
+    @Before("execution(* com.example.MyClientApp.controller.*.*(..))")
     void beforeController(JoinPoint joinPoint) {
         log.info(joinPoint + "args: {}", joinPoint.getArgs());
     }
 
-    @AfterReturning(value = "execution(* com.security.Securitydemo.controller.*.*(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.example.MyClientApp.controller.*.*(..))", returning = "returnValue")
     void afterController(JoinPoint joinPoint, Object returnValue) {
         log.info(joinPoint + "return: {}", returnValue);
     }
