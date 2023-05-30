@@ -16,21 +16,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/editUser/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId,
-                                              @RequestBody UserRequest request) {
-        return ResponseEntity.ok().body(userService.updateUser(request,userId));
+    @PostMapping("/editUser")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserRequest request) {
+        return ResponseEntity.ok().body(userService.updateUser(request));
+    }
+    
+    @GetMapping("/getUserById")
+    public ResponseEntity<UserDto> getUserById() {
+        return ResponseEntity.ok().body(userService.findUserById());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
-        return ResponseEntity.ok().body(userService.findUserById(userId));
-    }
 
-    @PatchMapping("/editPassword/{userId}")
-    public ResponseEntity<Void> updateUserPassword(@PathVariable Long userId,
-                                                   @RequestBody UserChangePassword request) {
-        userService.updatePassword(userId, request);
+    @PatchMapping("/editPassword")
+    public ResponseEntity<Void> updateUserPassword(@RequestBody UserChangePassword request) {
+        userService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
 
