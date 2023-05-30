@@ -56,7 +56,7 @@ public class UserService {
 
     public UserDto updateUser(UserRequest userRequest, Long id) {
         validationService.usernameCheck(userRequest.getUsername());
-        User fromDb = userFromDb(id);
+        User fromDb = currentUser();
         if (userRequest.getName() != null
                 && !userRequest.getName().equals(fromDb.getName())) {
             fromDb.setName(userRequest.getName());
@@ -76,7 +76,7 @@ public class UserService {
 
 
     public void updatePassword(Long id, UserChangePassword request) {
-        User fromDb = userFromDb(id);
+        User fromDb = currentUser();
         validationService.passwordCheck(request.getPassword());
         if (request.getPassword() != null
                 && !request.getPassword().equals(fromDb.getPassword())
@@ -88,6 +88,11 @@ public class UserService {
     private User userFromDb(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(USERID_NOT_FOUND + id, "userId"));
+    }
+    
+    public UserDto findUserById() {
+        User fromDb = currentUser();
+        return converter.userModelToDto(fromDb);
     }
 
     protected User findUserByUsername(String username) {
@@ -101,6 +106,11 @@ public class UserService {
         return UserDto.builder()
                 .username(userDb.getUsername())
                 .build();
+    }
+        private User currentUser() {
+        String username = getLoggedInUsername();
+        return userRepository.findUserByUsername(username).orElseThrow(
+                () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
 
 }
