@@ -10,6 +10,7 @@ import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
 
 import static com.example.MyClientApp.util.ErrorMessage.USERID_NOT_FOUND;
 import static com.example.MyClientApp.util.ErrorMessage.USERNAME_NOT_FOUND;
