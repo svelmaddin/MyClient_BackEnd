@@ -25,7 +25,8 @@ public class AuthService {
         this.tokenGenerator = tokenGenerator;
         this.authenticationManager = authenticationManager;
     }
-    public String getLoggedInUsername(){
+    
+     public static String getLoggedInUsername() {
         return ((UserDetails) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
