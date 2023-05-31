@@ -55,7 +55,7 @@ public class UserService {
     }
 
 
-    public UserDto updateUser(UserRequest userRequest, Long id) {
+    public UserDto updateUser(UserRequest userRequest) {
         validationService.usernameCheck(userRequest.getUsername());
         User fromDb = currentUser();
         if (userRequest.getName() != null
@@ -76,7 +76,7 @@ public class UserService {
     }
 
 
-    public void updatePassword(Long id, UserChangePassword request) {
+    public void updatePassword(UserChangePassword request) {
         User fromDb = currentUser();
         validationService.passwordCheck(request.getPassword());
         if (request.getPassword() != null
