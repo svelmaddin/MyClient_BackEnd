@@ -1,5 +1,6 @@
 package com.example.MyClientApp.service;
 
+import com.example.MyClientApp.dto.TokenResponseDto;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
@@ -10,6 +11,7 @@ import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
 
 import static com.example.MyClientApp.util.ErrorMessage.USERID_NOT_FOUND;
@@ -33,10 +35,10 @@ public class UserService {
     }
 
 
-    public void createUser(RegisterRequest request) {
+    protected void createUser(RegisterRequest request) {
         validationService.emailCheck(request.getEmail());
         validationService.usernameCheck(request.getUsername());
-        validationService.passwordCheck(request.getPassword());
+        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
         User user = new User();
         if (request.getUsername().isEmpty()) {
             user.setUsername(request.getEmail());
@@ -78,7 +80,7 @@ public class UserService {
 
     public void updatePassword(UserChangePassword request) {
         User fromDb = currentUser();
-        validationService.passwordCheck(request.getPassword());
+        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
         if (request.getPassword() != null
                 && !request.getPassword().equals(fromDb.getPassword())
                 && !request.getPassword().isEmpty()) {
@@ -90,7 +92,7 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(USERID_NOT_FOUND + id, "userId"));
     }
-    
+
     public UserDto findUserById() {
         User fromDb = currentUser();
         return converter.userModelToDto(fromDb);
@@ -108,7 +110,8 @@ public class UserService {
                 .username(userDb.getUsername())
                 .build();
     }
-        private User currentUser() {
+
+    private User currentUser() {
         String username = getLoggedInUsername();
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));

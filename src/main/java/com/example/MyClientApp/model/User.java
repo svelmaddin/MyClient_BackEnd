@@ -1,10 +1,16 @@
 package com.example.MyClientApp.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +26,5 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.valueOf("USER");
+
 }

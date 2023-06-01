@@ -18,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
 
-    public AuthController(AuthService authService,  UserService userService) {
+    public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
         this.userService = userService;
     }
@@ -30,10 +30,10 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
-    public void register(@RequestBody RegisterRequest request) {
-        userService.createUser(request);
+    public ResponseEntity<TokenResponseDto> register(@RequestBody RegisterRequest request) {
+//        userService.createUser(request);
+        return ResponseEntity.ok(authService.register(request));
     }
-
 
 
 }

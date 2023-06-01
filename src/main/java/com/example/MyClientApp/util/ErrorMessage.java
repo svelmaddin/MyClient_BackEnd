@@ -10,6 +10,7 @@ public class ErrorMessage {
     public static String TAKEN_EMAIL = "Email already taken! Try another Email";
     public static String WRONG_USER_DETAIL = "Username or Password is wrong! , please enter a valid username and password";
     public static String PASSWORD_REGEX = "^[a-zA-Z0-9]{6,10}$";
+    public static String PASSWORDS_MATCH = "Password And Confirm Password Did not matcher! Please be sure its equals.";
     public static String EMAIL_REGEX = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     public static String TAKEN_USERNAME = "Username already taken! Try another Username";
 
