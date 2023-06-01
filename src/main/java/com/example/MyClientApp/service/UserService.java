@@ -1,6 +1,5 @@
 package com.example.MyClientApp.service;
 
-import com.example.MyClientApp.dto.TokenResponseDto;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
 
-import static com.example.MyClientApp.util.ErrorMessage.USERID_NOT_FOUND;
 import static com.example.MyClientApp.util.ErrorMessage.USERNAME_NOT_FOUND;
 
 @Service
@@ -40,22 +38,11 @@ public class UserService {
         validationService.usernameCheck(request.getUsername());
         validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
         User user = new User();
-        if (request.getUsername().isEmpty()) {
-            user.setUsername(request.getEmail());
-        } else {
-            user.setUsername(request.getUsername());
-        }
+        user.setUsername(request.getEmail());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
-
-
-    public UserDto findUserById(Long id) {
-        User fromDb = userFromDb(id);
-        return converter.userModelToDto(fromDb);
-    }
-
 
     public UserDto updateUser(UserRequest userRequest) {
         validationService.usernameCheck(userRequest.getUsername());
@@ -86,11 +73,6 @@ public class UserService {
                 && !request.getPassword().isEmpty()) {
             fromDb.setPassword(passwordEncoder.encode(request.getPassword()));
         }
-    }
-
-    private User userFromDb(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new CustomException(USERID_NOT_FOUND + id, "userId"));
     }
 
     public UserDto findUserById() {

@@ -1,6 +1,7 @@
 package com.example.MyClientApp.service;
 
 import com.example.MyClientApp.dto.TokenResponseDto;
+import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.request.LoginRequest;
@@ -56,9 +57,13 @@ public class AuthService {
         userService.createUser(request);
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        UserDto userDto = UserDto.builder()
+                .email(request.getEmail())
+                .name(request.getName())
+                .build();
         return TokenResponseDto.builder()
                 .accessToken(tokenGenerator.generateToken(auth))
-                .userDto(userService.getUser(request.getEmail()))
+                .userDto(userDto)
                 .build();
     }
 

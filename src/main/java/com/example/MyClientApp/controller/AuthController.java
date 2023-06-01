@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AuthController {
     private final AuthService authService;
-    private final UserService userService;
 
-    public AuthController(AuthService authService, UserService userService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -31,7 +29,6 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TokenResponseDto> register(@RequestBody RegisterRequest request) {
-//        userService.createUser(request);
         return ResponseEntity.ok(authService.register(request));
     }
 

@@ -3,7 +3,6 @@ package com.example.MyClientApp.service;
 
 import com.example.MyClientApp.exception.CustomException;
 import com.example.MyClientApp.repository.UserRepository;
-import com.example.MyClientApp.request.RegisterRequest;
 import org.springframework.stereotype.Service;
 
 import static com.example.MyClientApp.util.ErrorMessage.*;
