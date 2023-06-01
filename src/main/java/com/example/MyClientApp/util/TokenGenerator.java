@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+
 @Component
 public class TokenGenerator {
 
@@ -39,7 +40,7 @@ public class TokenGenerator {
             return verifier.verify(token);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new CustomException("Please Try again!","");
+            throw new CustomException("Please Try again!", "");
         }
 
     }

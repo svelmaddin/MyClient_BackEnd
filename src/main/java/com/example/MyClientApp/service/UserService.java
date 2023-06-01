@@ -11,7 +11,8 @@ import com.example.MyClientApp.request.UserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.example.MyClientApp.util.ErrorMessage.USERID_NOT_FOUND;
+import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
+
 import static com.example.MyClientApp.util.ErrorMessage.USERNAME_NOT_FOUND;
 
 @Service
@@ -32,31 +33,20 @@ public class UserService {
     }
 
 
-    public void createUser(RegisterRequest request) {
+    protected void createUser(RegisterRequest request) {
         validationService.emailCheck(request.getEmail());
         validationService.usernameCheck(request.getUsername());
-        validationService.passwordCheck(request.getPassword());
+        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
         User user = new User();
-        if (request.getUsername().isEmpty()) {
-            user.setUsername(request.getEmail());
-        } else {
-            user.setUsername(request.getUsername());
-        }
+        user.setUsername(request.getEmail());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
 
-
-    public UserDto findUserById(Long id) {
-        User fromDb = userFromDb(id);
-        return converter.userModelToDto(fromDb);
-    }
-
-
-    public UserDto updateUser(UserRequest userRequest, Long id) {
+    public UserDto updateUser(UserRequest userRequest) {
         validationService.usernameCheck(userRequest.getUsername());
-        User fromDb = userFromDb(id);
+        User fromDb = currentUser();
         if (userRequest.getName() != null
                 && !userRequest.getName().equals(fromDb.getName())) {
             fromDb.setName(userRequest.getName());
@@ -75,9 +65,9 @@ public class UserService {
     }
 
 
-    public void updatePassword(Long id, UserChangePassword request) {
-        User fromDb = userFromDb(id);
-        validationService.passwordCheck(request.getPassword());
+    public void updatePassword(UserChangePassword request) {
+        User fromDb = currentUser();
+        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
         if (request.getPassword() != null
                 && !request.getPassword().equals(fromDb.getPassword())
                 && !request.getPassword().isEmpty()) {
@@ -85,9 +75,9 @@ public class UserService {
         }
     }
 
-    private User userFromDb(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new CustomException(USERID_NOT_FOUND + id, "userId"));
+    public UserDto findUserById() {
+        User fromDb = currentUser();
+        return converter.userModelToDto(fromDb);
     }
 
     protected User findUserByUsername(String username) {
@@ -101,6 +91,12 @@ public class UserService {
         return UserDto.builder()
                 .username(userDb.getUsername())
                 .build();
+    }
+
+    private User currentUser() {
+        String username = getLoggedInUsername();
+        return userRepository.findUserByUsername(username).orElseThrow(
+                () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
 
 }

@@ -28,12 +28,18 @@ public class ValidationService {
         }
     }
 
-    protected void passwordCheck(String password) {
+    protected void passwordCheck(String password, String confirmPass) {
         if (password.isEmpty()) {
+            throw new CustomException(PASSWORD_NOT_NULL, "password");
+        }
+        if (confirmPass.isEmpty()) {
             throw new CustomException(PASSWORD_NOT_NULL, "password");
         }
         if (!password.matches(PASSWORD_REGEX)) {
             throw new CustomException(INVALID_PASSWORD, "password");
+        }
+        if (!password.equals(confirmPass)){
+            throw new CustomException(PASSWORDS_MATCH, "password");
         }
     }
 

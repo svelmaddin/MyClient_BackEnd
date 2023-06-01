@@ -1,6 +1,5 @@
 package com.example.MyClientApp.controller;
 
-
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
@@ -16,21 +15,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/editUser/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId,
-                                              @RequestBody UserRequest request) {
-        return ResponseEntity.ok().body(userService.updateUser(request,userId));
+    @PostMapping("/editUser")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserRequest request) {
+        return ResponseEntity.ok().body(userService.updateUser(request));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
-        return ResponseEntity.ok().body(userService.findUserById(userId));
+    @GetMapping("/getUserById")
+    public ResponseEntity<UserDto> getUserById() {
+        return ResponseEntity.ok().body(userService.findUserById());
     }
 
-    @PatchMapping("/editPassword/{userId}")
-    public ResponseEntity<Void> updateUserPassword(@PathVariable Long userId,
-                                                   @RequestBody UserChangePassword request) {
-        userService.updatePassword(userId, request);
+    @PatchMapping("/editPassword")
+    public ResponseEntity<Void> updateUserPassword(@RequestBody UserChangePassword request) {
+        userService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
 
