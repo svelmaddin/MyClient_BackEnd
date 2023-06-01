@@ -5,15 +5,12 @@ import com.example.MyClientApp.dto.TokenResponseDto;
 import com.example.MyClientApp.request.LoginRequest;
 import com.example.MyClientApp.request.RegisterRequest;
 import com.example.MyClientApp.service.AuthService;
-import com.example.MyClientApp.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
-@Slf4j
 public class AuthController {
     private final AuthService authService;
 

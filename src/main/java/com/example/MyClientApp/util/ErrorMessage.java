@@ -1,7 +1,6 @@
 package com.example.MyClientApp.util;
 
 public class ErrorMessage {
-    public static String USERID_NOT_FOUND = "User not found with given id: ";
     public static String USERNAME_NOT_FOUND = "User not found with given username: ";
     public static String INVALID_PASSWORD = "Invalid password! Please Enter a Valid Password , Password must be min 6 , max 10 character!";
     public static String PASSWORD_NOT_NULL = "User password can not be empty! Please Enter a Valid Password";

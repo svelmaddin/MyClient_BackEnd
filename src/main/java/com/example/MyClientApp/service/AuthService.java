@@ -3,7 +3,6 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.dto.TokenResponseDto;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
-import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.request.LoginRequest;
 import com.example.MyClientApp.request.RegisterRequest;
 import com.example.MyClientApp.util.TokenGenerator;
@@ -14,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 
 import static com.example.MyClientApp.util.ErrorMessage.WRONG_USER_DETAIL;
 
