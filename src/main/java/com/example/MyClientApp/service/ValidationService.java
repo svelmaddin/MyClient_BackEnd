@@ -38,7 +38,7 @@ public class ValidationService {
         if (!password.matches(PASSWORD_REGEX)) {
             throw new CustomException(INVALID_PASSWORD, "password");
         }
-        if (!password.equals(confirmPass)){
+        if (!password.equals(confirmPass)) {
             throw new CustomException(PASSWORDS_MATCH, "password");
         }
     }
@@ -46,6 +46,15 @@ public class ValidationService {
     protected void usernameCheck(String username) {
         if (userRepository.existsUserByUsername(username)) {
             throw new CustomException(TAKEN_USERNAME, "username");
+        }
+    }
+
+    protected void nameAndSurnameCheck(String name, String surname) {
+        if (name.isEmpty() && name.isBlank()) {
+            throw new CustomException(NAME_NOT_NLL, "name");
+        }
+        if (surname.isEmpty() && surname.isBlank()) {
+            throw new CustomException(SURNAME_NOT_NLL, "username");
         }
     }
 

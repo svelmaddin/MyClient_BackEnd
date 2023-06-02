@@ -7,6 +7,8 @@ import com.example.MyClientApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     private final UserService userService;
@@ -29,6 +31,14 @@ public class UserController {
     public ResponseEntity<Void> updateUserPassword(@RequestBody UserChangePassword request) {
         userService.updatePassword(request);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/api/admin/userList")
+    public ResponseEntity<List<UserDto>> getUserListForAdmin(){
+        return ResponseEntity.ok(userService.getUserList());
+    }
+    @DeleteMapping("/api/admin/deleteUser")
+    public void deleteUser(String id){
+        userService.deleteUser(id);
     }
 
 }

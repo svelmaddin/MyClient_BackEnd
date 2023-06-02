@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .requestMatchers("/api/login" ,"/api/loginGoogle" ,"/api/register").permitAll()
+                .requestMatchers("/api/login", "/api/loginGoogle", "/api/register", "/api/admin/userList", "/api/admin/deleteUser").permitAll()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
                 .authenticated().and()
@@ -49,13 +49,15 @@ public class SecurityConfig {
                 .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-    private static final String [] AUTH_WHITELIST = {
+
+    private static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
             "/v3/api-docs/**",
             "/v3/api-docs.properties",
             "/swagger-ui/**",
             "/swagger-ui.html"
     };
+
     @Bean
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
