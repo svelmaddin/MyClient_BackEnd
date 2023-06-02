@@ -4,8 +4,9 @@ import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
 import com.example.MyClientApp.service.UserService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +23,21 @@ public class UserController {
         return ResponseEntity.ok().body(userService.updateUser(request));
     }
 
+    @PostMapping("/profilePhoto")
+    public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
+        userService.uploadPhoto(file);
+        return ResponseEntity.ok("Profile photo uploaded successfully.");
+    }
+
+    @GetMapping("/profilePhoto")
+    public ResponseEntity<byte[]> downloadProfilePhoto() {
+        byte[] profilePhoto = userService.downloadProfilePhoto();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("profilePhoto.jpg").build());
+        return new ResponseEntity<>(profilePhoto, headers, HttpStatus.OK);
+    }
+
     @GetMapping("/getUserById")
     public ResponseEntity<UserDto> getUserById() {
         return ResponseEntity.ok().body(userService.findUserById());
@@ -32,12 +48,14 @@ public class UserController {
         userService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/api/admin/userList")
-    public ResponseEntity<List<UserDto>> getUserListForAdmin(){
+    public ResponseEntity<List<UserDto>> getUserListForAdmin() {
         return ResponseEntity.ok(userService.getUserList());
     }
+
     @DeleteMapping("/api/admin/deleteUser")
-    public void deleteUser(String id){
+    public void deleteUser(String id) {
         userService.deleteUser(id);
     }
 

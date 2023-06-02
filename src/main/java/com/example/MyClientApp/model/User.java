@@ -24,7 +24,9 @@ public class User {
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
-    private String profileImageId;
+    @Lob
+    @Column(length = 10485760)
+    private byte[] profilePhoto;
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.valueOf("USER");

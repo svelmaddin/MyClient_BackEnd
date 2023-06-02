@@ -42,7 +42,6 @@ public class TokenGenerator {
             e.printStackTrace();
             throw new CustomException("Please Try again!", "");
         }
-
     }
 
 }

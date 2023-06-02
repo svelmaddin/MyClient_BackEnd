@@ -9,9 +9,12 @@ import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.RegisterRequest;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +40,7 @@ public class UserService {
     }
 
     protected void createUser(RegisterRequest request) {
-        validationCheck(request);
+        validationService.validationCheckRegister(request);
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
@@ -47,6 +50,26 @@ public class UserService {
                 .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
+    }
+
+    public void uploadPhoto(MultipartFile file) {
+        User user = currentUser();
+        try {
+            byte[] fileContent = file.getBytes();
+            user.setProfilePhoto(fileContent);
+            userRepository.save(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public byte[] downloadProfilePhoto() {
+        User user = currentUser();
+        byte[] profilePhoto = user.getProfilePhoto();
+        if (profilePhoto == null) {
+            throw new CustomException("Profile photo is empty!", "profile Photo");
+        }
+        return profilePhoto;
     }
 
     public UserDto updateUser(UserRequest userRequest) {
@@ -90,7 +113,7 @@ public class UserService {
                 .stream().map(converter::userModelToDto).collect(Collectors.toList());
     }
 
-    public void deleteUser(String  id) {
+    public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
@@ -112,12 +135,4 @@ public class UserService {
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
-
-    private void validationCheck(RegisterRequest request) {
-        validationService.emailCheck(request.getEmail());
-        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
-        validationService.usernameCheck(request.getUsername());
-        validationService.nameAndSurnameCheck(request.getName(), request.getSurname());
-    }
-
 }

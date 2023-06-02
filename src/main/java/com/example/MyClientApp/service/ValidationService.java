@@ -3,6 +3,7 @@ package com.example.MyClientApp.service;
 
 import com.example.MyClientApp.exception.CustomException;
 import com.example.MyClientApp.repository.UserRepository;
+import com.example.MyClientApp.request.RegisterRequest;
 import org.springframework.stereotype.Service;
 
 import static com.example.MyClientApp.util.ErrorMessage.*;
@@ -16,15 +17,16 @@ public class ValidationService {
         this.userRepository = userRepository;
     }
 
-    protected void emailCheck(String email) {
-        if (userRepository.existsUserByEmail(email)) {
-            throw new CustomException(TAKEN_EMAIL, "email");
-        }
-        if (email.isEmpty()) {
-            throw new CustomException(EMAIL_NOT_NULL, "email");
-        }
-        if (!email.matches(EMAIL_REGEX)) {
-            throw new CustomException(INVALID_EMAIL, "email");
+    public void validationCheckRegister(RegisterRequest request) {
+        emailCheck(request.getEmail());
+        usernameCheck(request.getUsername());
+        passwordCheck(request.getPassword(), request.getConfirmPas());
+        nameAndSurnameCheck(request.getName(), request.getSurname());
+    }
+
+    protected void usernameCheck(String username) {
+        if (userRepository.existsUserByUsername(username)) {
+            throw new CustomException(TAKEN_USERNAME, "username");
         }
     }
 
@@ -43,13 +45,19 @@ public class ValidationService {
         }
     }
 
-    protected void usernameCheck(String username) {
-        if (userRepository.existsUserByUsername(username)) {
-            throw new CustomException(TAKEN_USERNAME, "username");
+    private void emailCheck(String email) {
+        if (userRepository.existsUserByEmail(email)) {
+            throw new CustomException(TAKEN_EMAIL, "email");
+        }
+        if (email.isEmpty()) {
+            throw new CustomException(EMAIL_NOT_NULL, "email");
+        }
+        if (!email.matches(EMAIL_REGEX)) {
+            throw new CustomException(INVALID_EMAIL, "email");
         }
     }
 
-    protected void nameAndSurnameCheck(String name, String surname) {
+    private void nameAndSurnameCheck(String name, String surname) {
         if (name.isEmpty() && name.isBlank()) {
             throw new CustomException(NAME_NOT_NLL, "name");
         }
