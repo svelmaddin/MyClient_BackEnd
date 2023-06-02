@@ -20,7 +20,7 @@ public class UserConverter {
                 .surname(from.getSurname())
                 .email(from.getEmail())
                 .username(from.getUsername())
-                .profileImageId(from.getProfileImageId())
+                .profilePhoto(from.getProfilePhoto())
                 .build();
     }
 }

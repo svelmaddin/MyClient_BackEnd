@@ -12,5 +12,9 @@ public class ErrorMessage {
     public static String PASSWORDS_MATCH = "Password And Confirm Password Did not matcher! Please be sure its equals.";
     public static String EMAIL_REGEX = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     public static String TAKEN_USERNAME = "Username already taken! Try another Username";
+    public static String NAME_NOT_NLL = "Name Can not be null! Please enter your name.";
+    public static String SURNAME_NOT_NLL = "Surname Can not be null! Please enter your Surname.";
+//    public static String FIELD_REGEX = "Name And Username can not be start with number! Please enter a valid data! Example: name =Test ,surname=Testov";
+
 
 }

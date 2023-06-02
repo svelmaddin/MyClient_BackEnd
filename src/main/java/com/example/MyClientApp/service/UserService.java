@@ -3,13 +3,20 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
+import com.example.MyClientApp.model.Role;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.RegisterRequest;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
 
@@ -32,16 +39,37 @@ public class UserService {
         this.validationService = validationService;
     }
 
-
     protected void createUser(RegisterRequest request) {
-        validationService.emailCheck(request.getEmail());
-        validationService.usernameCheck(request.getUsername());
-        validationService.passwordCheck(request.getPassword(), request.getConfirmPas());
-        User user = new User();
-        user.setUsername(request.getEmail());
-        user.setEmail(request.getEmail());
+        validationService.validationCheckRegister(request);
+        User user = User.builder()
+                .name(request.getName())
+                .surname(request.getSurname())
+                .username(request.getEmail())
+                .email(request.getEmail())
+                .role(Role.valueOf("USER"))
+                .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
+    }
+
+    public void uploadPhoto(MultipartFile file) {
+        User user = currentUser();
+        try {
+            byte[] fileContent = file.getBytes();
+            user.setProfilePhoto(fileContent);
+            userRepository.save(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public byte[] downloadProfilePhoto() {
+        User user = currentUser();
+        byte[] profilePhoto = user.getProfilePhoto();
+        if (profilePhoto == null) {
+            throw new CustomException("Profile photo is empty!", "profile Photo");
+        }
+        return profilePhoto;
     }
 
     public UserDto updateUser(UserRequest userRequest) {
@@ -80,6 +108,15 @@ public class UserService {
         return converter.userModelToDto(fromDb);
     }
 
+    public List<UserDto> getUserList() {
+        return userRepository.findAll()
+                .stream().map(converter::userModelToDto).collect(Collectors.toList());
+    }
+
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
+
     protected User findUserByUsername(String username) {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(
@@ -98,5 +135,4 @@ public class UserService {
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
-
 }

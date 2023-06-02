@@ -58,6 +58,7 @@ public class AuthService {
         UserDto userDto = UserDto.builder()
                 .email(request.getEmail())
                 .name(request.getName())
+                .surname(request.getSurname())
                 .build();
         return TokenResponseDto.builder()
                 .accessToken(tokenGenerator.generateToken(auth))
