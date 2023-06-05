@@ -1,7 +1,5 @@
 package com.example.MyClientApp.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 public class UserChangePassword {
     public String password;
