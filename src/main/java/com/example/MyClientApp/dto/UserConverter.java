@@ -5,13 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
-    public User dtoToModel(UserDto from) {
-        User user = new User();
-        user.setEmail(from.email());
-        user.setName(from.name());
-        user.setSurname(from.surname());
-        return user;
-    }
 
     public UserDto userModelToDto(User from) {
         return UserDto.builder()

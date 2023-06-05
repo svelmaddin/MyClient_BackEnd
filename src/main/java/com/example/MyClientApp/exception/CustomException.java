@@ -1,7 +1,5 @@
 package com.example.MyClientApp.exception;
 
-import org.springframework.http.HttpStatusCode;
-
 public class CustomException extends RuntimeException {
     private final String message;
     private final String field;

@@ -8,7 +8,6 @@ public record UserDto(
         String email,
         String name,
         String surname,
-
         byte[] profilePhoto
 ) {
 }

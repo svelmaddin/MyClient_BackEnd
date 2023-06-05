@@ -4,6 +4,8 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.exception.CustomException;
 import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.RegisterRequest;
+import com.example.MyClientApp.request.UserChangePassword;
+import com.example.MyClientApp.request.UserRequest;
 import org.springframework.stereotype.Service;
 
 import static com.example.MyClientApp.util.ErrorMessage.*;
@@ -23,13 +25,23 @@ public class ValidationService {
         nameAndSurnameCheck(request.getName(), request.getSurname());
     }
 
-    protected void usernameCheck(String username) {
+    public void updateUserValidationCheck(UserRequest update) {
+        nameAndSurnameCheck(update.getName(), update.getSurname());
+        emailCheck(update.getEmail());
+        usernameCheck(update.getEmail());
+    }
+
+    public void updatePasswordValidationCheck(UserChangePassword password) {
+        passwordCheck(password.getPassword(), password.getConfirmPas());
+    }
+
+    private void usernameCheck(String username) {
         if (userRepository.existsUserByUsername(username)) {
             throw new CustomException(TAKEN_USERNAME, "username");
         }
     }
 
-    protected void passwordCheck(String password, String confirmPass) {
+    private void passwordCheck(String password, String confirmPass) {
         if (password.isEmpty()) {
             throw new CustomException(PASSWORD_NOT_NULL, "password");
         }

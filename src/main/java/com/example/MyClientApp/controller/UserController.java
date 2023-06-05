@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.example.MyClientApp.util.ErrorMessage.PHOTO_UPLOAD_SUCCESS;
+
 @RestController
 public class UserController {
     private final UserService userService;
@@ -26,7 +28,7 @@ public class UserController {
     @PostMapping("/profilePhoto")
     public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
         userService.uploadPhoto(file);
-        return ResponseEntity.ok("Profile photo uploaded successfully.");
+        return ResponseEntity.ok(PHOTO_UPLOAD_SUCCESS);
     }
 
     @GetMapping("/profilePhoto")

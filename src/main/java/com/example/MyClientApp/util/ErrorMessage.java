@@ -1,6 +1,5 @@
 package com.example.MyClientApp.util;
 
-import org.springframework.http.HttpStatus;
 
 public class ErrorMessage {
     public static String USERNAME_NOT_FOUND = "User not found with given username: ";
@@ -16,5 +15,7 @@ public class ErrorMessage {
     public static String TAKEN_USERNAME = "Username already taken! Try another Username";
     public static String NAME_NOT_NLL = "Name Can not be null! Please enter your name.";
     public static String SURNAME_NOT_NLL = "Surname Can not be null! Please enter your Surname.";
+    public static String PHOTO_NULL ="Profile photo is empty!";
+    public static String PHOTO_UPLOAD_SUCCESS ="Profile photo uploaded was successfully.";
 
 }
