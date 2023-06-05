@@ -1,7 +1,10 @@
 package com.example.MyClientApp.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -18,6 +21,6 @@ public class GlobalExceptionHandler {
                 "field", ex.getField()
         ));
 
-        return ResponseEntity.badRequest().body(errorBody);
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(errorBody);
     }
 }
