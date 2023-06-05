@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
+@Table(name = "Users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
