@@ -125,7 +125,11 @@ public class UserService {
     protected UserDto getUser(String username) {
         var userDb = findUserByUsername(username);
         return UserDto.builder()
-                .username(userDb.getUsername())
+                .id(userDb.getId())
+                .email(userDb.getEmail())
+                .name(userDb.getName())
+                .surname(userDb.getSurname())
+                .profilePhoto(userDb.getProfilePhoto())
                 .build();
     }
 

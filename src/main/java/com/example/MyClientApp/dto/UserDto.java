@@ -4,11 +4,11 @@ import lombok.Builder;
 
 @Builder
 public record UserDto(
-        Long id,
+        String id,
         String email,
-        String username,
         String name,
-        byte[] profilePhoto,
-        String surname
+        String surname,
+
+        byte[] profilePhoto
 ) {
 }

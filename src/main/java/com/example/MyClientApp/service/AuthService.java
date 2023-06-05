@@ -41,10 +41,10 @@ public class AuthService {
     public TokenResponseDto login(LoginRequest loginRequest) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             return TokenResponseDto.builder()
                     .accessToken(tokenGenerator.generateToken(auth))
-                    .userDto(userService.getUser(loginRequest.getUsername()))
+                    .userDto(userService.getUser(loginRequest.getEmail()))
                     .build();
         } catch (Exception e) {
             throw new CustomException(WRONG_USER_DETAIL, " ");
@@ -62,8 +62,7 @@ public class AuthService {
                 .build();
         return TokenResponseDto.builder()
                 .accessToken(tokenGenerator.generateToken(auth))
-                .userDto(userDto)
-                .build();
-    }
+                .userDto(userService.getUser(request.getEmail()))
+                .build();    }
 
 }
