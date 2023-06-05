@@ -19,7 +19,6 @@ public class ValidationService {
 
     public void validationCheckRegister(RegisterRequest request) {
         emailCheck(request.getEmail());
-        usernameCheck(request.getUsername());
         passwordCheck(request.getPassword(), request.getConfirmPas());
         nameAndSurnameCheck(request.getName(), request.getSurname());
     }
