@@ -4,6 +4,7 @@ import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.request.CreateShopRequest;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
+import com.example.MyClientApp.service.FileService;
 import com.example.MyClientApp.service.StoreService;
 import com.example.MyClientApp.service.UserService;
 import org.springframework.http.*;
@@ -19,10 +20,14 @@ import static com.example.MyClientApp.util.ErrorMessage.PHOTO_UPLOAD_SUCCESS;
 public class UserController {
     private final UserService userService;
     private final StoreService storeService;
+    private final FileService fileService;
 
-    public UserController(UserService userService, StoreService storeService) {
+    public UserController(UserService userService,
+                          StoreService storeService,
+                          FileService fileService) {
         this.userService = userService;
         this.storeService = storeService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/editUser")
@@ -32,13 +37,13 @@ public class UserController {
 
     @PostMapping("/profilePhoto")
     public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
-        userService.uploadPhoto(file);
+        fileService.uploadPhoto(file);
         return ResponseEntity.ok(PHOTO_UPLOAD_SUCCESS);
     }
 
     @GetMapping("/profilePhoto")
     public ResponseEntity<byte[]> downloadProfilePhoto() {
-        byte[] profilePhoto = userService.downloadProfilePhoto();
+        byte[] profilePhoto = fileService.downloadProfilePhoto();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename("profilePhoto.jpg").build());

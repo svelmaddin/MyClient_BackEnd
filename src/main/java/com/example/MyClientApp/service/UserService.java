@@ -61,27 +61,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
-    @Transactional
-    public void uploadPhoto(MultipartFile file) {
-        User user = currentUser();
-        try {
-            byte[] fileContent = file.getBytes();
-            user.setProfilePhoto(fileContent);
-            userRepository.save(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Transactional
-    public byte[] downloadProfilePhoto() {
-        User user = currentUser();
-        byte[] profilePhoto = user.getProfilePhoto();
-        if (profilePhoto == null) {
-            throw new CustomException(PHOTO_NULL, "Photo");
-        }
-        return profilePhoto;
-    }
 
     @Transactional
     public UserDto updateUser(UserRequest userRequest) {
@@ -142,7 +121,7 @@ public class UserService {
                         () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
 
-    private User currentUser() {
+    protected User currentUser() {
         String username = getLoggedInUsername();
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
