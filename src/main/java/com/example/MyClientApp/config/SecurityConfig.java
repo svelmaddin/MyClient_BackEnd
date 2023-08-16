@@ -37,7 +37,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .requestMatchers("/api/login", "/api/loginGoogle", "/api/register", "/api/admin/userList", "/api/admin/deleteUser").permitAll()
+                .requestMatchers("/auth/login", "/auth/loginGoogle", "/auth/register", "/auth/admin/userList", "/auth/admin/deleteUser",
+                        "/auth/register/shops").permitAll()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
                 .authenticated().and()

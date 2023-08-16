@@ -3,15 +3,16 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
+import com.example.MyClientApp.model.Gender;
 import com.example.MyClientApp.model.Role;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.repository.UserRepository;
-import com.example.MyClientApp.request.RegisterRequest;
-import com.example.MyClientApp.request.UserChangePassword;
-import com.example.MyClientApp.request.UserRequest;
+import com.example.MyClientApp.request.*;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -53,12 +54,13 @@ public class UserService {
                 .surname(request.getSurname())
                 .username(request.getEmail())
                 .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .gender(request.getGender())
                 .role(Role.valueOf("USER"))
                 .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
-
     @Transactional
     public void uploadPhoto(MultipartFile file) {
         User user = currentUser();
@@ -145,4 +147,5 @@ public class UserService {
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
     }
+
 }

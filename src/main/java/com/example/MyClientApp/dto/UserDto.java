@@ -1,5 +1,6 @@
 package com.example.MyClientApp.dto;
 
+import com.example.MyClientApp.model.Gender;
 import lombok.Builder;
 
 @Builder
@@ -8,6 +9,8 @@ public record UserDto(
         String email,
         String name,
         String surname,
+        String phoneNumber,
+        Gender gender,
         byte[] profilePhoto
 ) {
 }

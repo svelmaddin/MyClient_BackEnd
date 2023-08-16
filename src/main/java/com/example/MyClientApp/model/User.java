@@ -24,6 +24,9 @@ public class User {
     private String surname;
     private String username;
     private String password;
+    private String phoneNumber;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @Column(unique = true, nullable = false)
     private String email;
     @Lob
@@ -31,7 +34,7 @@ public class User {
     private byte[] profilePhoto;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.valueOf("USER");
+    private Role role;
 
     @Override
     public boolean equals(Object o) {

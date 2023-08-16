@@ -12,6 +12,8 @@ public class UserConverter {
                 .name(from.getName())
                 .surname(from.getSurname())
                 .email(from.getEmail())
+                .phoneNumber(from.getPhoneNumber())
+                .gender(from.getGender())
                 .profilePhoto(from.getProfilePhoto())
                 .build();
     }

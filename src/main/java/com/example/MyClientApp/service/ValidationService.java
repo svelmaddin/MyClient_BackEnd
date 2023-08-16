@@ -3,6 +3,7 @@ package com.example.MyClientApp.service;
 
 import com.example.MyClientApp.exception.CustomException;
 import com.example.MyClientApp.repository.UserRepository;
+import com.example.MyClientApp.request.CreateShopRequest;
 import com.example.MyClientApp.request.RegisterRequest;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
@@ -20,6 +21,11 @@ public class ValidationService {
     }
 
     public void validationCheckRegister(RegisterRequest request) {
+        emailCheck(request.getEmail());
+        passwordCheck(request.getPassword(), request.getConfirmPas());
+        nameAndSurnameCheck(request.getName(), request.getSurname());
+    }
+    public void validationCheckCreateShop(CreateShopRequest request) {
         emailCheck(request.getEmail());
         passwordCheck(request.getPassword(), request.getConfirmPas());
         nameAndSurnameCheck(request.getName(), request.getSurname());
