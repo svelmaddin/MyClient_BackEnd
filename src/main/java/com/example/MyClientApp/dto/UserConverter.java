@@ -14,6 +14,7 @@ public class UserConverter {
                 .email(from.getEmail())
                 .phoneNumber(from.getPhoneNumber())
                 .gender(from.getGender())
+                .active(from.isActive())
                 .profilePhoto(from.getProfilePhoto())
                 .build();
     }

@@ -11,6 +11,7 @@ public record UserDto(
         String surname,
         String phoneNumber,
         Gender gender,
+        boolean active,
         byte[] profilePhoto
 ) {
 }

@@ -1,17 +1,17 @@
-package com.example.MyClientApp.model;
+package com.example.MyClientApp.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class StoreDetailsModel {
+public class StoreResponse {
     private String storeName;
     private String country;
     private String city;
@@ -19,4 +19,7 @@ public class StoreDetailsModel {
     private String zipcode;
     private String address;
     private String phoneNumber;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+    private Byte[] photo;
 }

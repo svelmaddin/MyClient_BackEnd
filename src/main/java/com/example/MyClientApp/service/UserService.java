@@ -3,25 +3,19 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
-import com.example.MyClientApp.model.Gender;
 import com.example.MyClientApp.model.Role;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.*;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.MyClientApp.service.AuthService.getLoggedInUsername;
 
-import static com.example.MyClientApp.util.ErrorMessage.PHOTO_NULL;
 import static com.example.MyClientApp.util.ErrorMessage.USERNAME_NOT_FOUND;
 
 @Service
@@ -56,6 +50,7 @@ public class UserService {
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .gender(request.getGender())
+                .active(true)
                 .role(Role.valueOf("USER"))
                 .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));

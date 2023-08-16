@@ -1,13 +1,11 @@
 package com.example.MyClientApp.service;
 
-import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.model.Gender;
 import com.example.MyClientApp.model.Role;
 import com.example.MyClientApp.model.StoreDetailsModel;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.CreateShopRequest;
-import com.example.MyClientApp.request.CreateStoreDetailsRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,21 +27,21 @@ public class StoreService {
     }
 
     @Transactional
-    public void createShop(CreateShopRequest request) {
+    protected void createShop(CreateShopRequest request) {
         validationService.validationCheckCreateShop(request);
-        User shop = User.builder()
+        final User shop = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .username(request.getEmail())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .gender(Gender.CUSTOM)
+                .active(false)
                 .role(Role.valueOf("SHOP"))
                 .build();
         shop.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(shop);
-        StoreDetailsModel shopDetails = StoreDetailsModel
-                .builder()
+        final StoreDetailsModel shopDetails = StoreDetailsModel.builder()
                 .storeName(request.getStoreName())
                 .country(request.getCountry())
                 .city(request.getCity())

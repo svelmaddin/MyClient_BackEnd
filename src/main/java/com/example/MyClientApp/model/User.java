@@ -7,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
 
-
 @Entity(name = "Users")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +24,7 @@ public class User {
     private String username;
     private String password;
     private String phoneNumber;
+    private boolean active;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(unique = true, nullable = false)

@@ -19,14 +19,11 @@ import static com.example.MyClientApp.util.ErrorMessage.PHOTO_UPLOAD_SUCCESS;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-    private final StoreService storeService;
     private final FileService fileService;
 
     public UserController(UserService userService,
-                          StoreService storeService,
                           FileService fileService) {
         this.userService = userService;
-        this.storeService = storeService;
         this.fileService = fileService;
     }
 
@@ -69,14 +66,6 @@ public class UserController {
     @DeleteMapping("/api/admin/deleteUser")
     public void deleteUser(String id) {
         userService.deleteUser(id);
-    }
-
-
-    //forAdmin
-    @PostMapping("/createShop")
-    public ResponseEntity<Void> createShop(@RequestBody CreateShopRequest request) {
-        storeService.createShop(request);
-        return ResponseEntity.ok().build();
     }
 
 }
