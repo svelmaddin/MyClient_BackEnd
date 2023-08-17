@@ -13,6 +13,7 @@ public class UserConverter {
                 .surname(from.getSurname())
                 .email(from.getEmail())
                 .phoneNumber(from.getPhoneNumber())
+                .role(from.getRole())
                 .gender(from.getGender())
                 .active(from.isActive())
                 .profilePhoto(from.getProfilePhoto())

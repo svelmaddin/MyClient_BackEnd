@@ -1,7 +1,7 @@
 package com.example.MyClientApp.controller;
 
 import com.example.MyClientApp.dto.UserDto;
-import com.example.MyClientApp.request.CreateShopRequest;
+import com.example.MyClientApp.model.Role;
 import com.example.MyClientApp.request.UserChangePassword;
 import com.example.MyClientApp.request.UserRequest;
 import com.example.MyClientApp.service.FileService;
@@ -20,11 +20,13 @@ import static com.example.MyClientApp.util.ErrorMessage.PHOTO_UPLOAD_SUCCESS;
 public class UserController {
     private final UserService userService;
     private final FileService fileService;
+    private final StoreService storeService;
 
     public UserController(UserService userService,
-                          FileService fileService) {
+                          FileService fileService, StoreService storeService) {
         this.userService = userService;
         this.fileService = fileService;
+        this.storeService = storeService;
     }
 
     @PostMapping("/editUser")
@@ -63,9 +65,21 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserList());
     }
 
+    @GetMapping("/api/admin/userList/{role}")
+    public ResponseEntity<List<UserDto>> findByRole(@PathVariable Role role) {
+        return ResponseEntity.ok(userService.findByRole(role));
+    }
+
     @DeleteMapping("/api/admin/deleteUser")
     public void deleteUser(String id) {
         userService.deleteUser(id);
+    }
+
+    @PostMapping("/api/admin/edit/status")
+    public ResponseEntity<Void> setUserActiveStatus(@RequestParam(name = "id") String id,
+                                                    @RequestParam(name = "status") boolean status) {
+        storeService.setShopActiveStatus(id, status);
+        return ResponseEntity.ok().build();
     }
 
 }

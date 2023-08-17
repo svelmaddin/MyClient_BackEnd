@@ -51,7 +51,7 @@ public class UserService {
                 .phoneNumber(request.getPhoneNumber())
                 .gender(request.getGender())
                 .active(true)
-                .role(Role.valueOf("USER"))
+                .role(Role.CUSTOMER)
                 .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
@@ -97,6 +97,10 @@ public class UserService {
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
+    }
+
+    public List<UserDto> findByRole(Role role) {
+        return userRepository.findAllByRole(role).stream().map(converter::userModelToDto).collect(Collectors.toList());
     }
 
     protected UserDto getUser(String username) {
