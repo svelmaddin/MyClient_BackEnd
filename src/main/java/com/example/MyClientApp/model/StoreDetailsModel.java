@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class StoreDetailsModel {
+    private String userId;
     private String storeName;
     private String country;
     private String city;

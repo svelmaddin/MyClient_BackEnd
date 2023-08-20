@@ -43,11 +43,12 @@ public class StoreService {
                 .phoneNumber(request.getPhoneNumber())
                 .gender(Gender.CUSTOM)
                 .active(false)
-                .role(Role.valueOf("SHOP"))
+                .role(Role.SHOP)
                 .build();
         shop.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(shop);
+        User user = userRepository.save(shop);
         final StoreDetailsModel shopDetails = StoreDetailsModel.builder()
+                .userId(user.getId())
                 .storeName(request.getStoreName())
                 .country(request.getCountry())
                 .city(request.getCity())
@@ -63,7 +64,7 @@ public class StoreService {
     private void createStoreDetails(StoreDetailsModel request) {
         final String URL = "http://localhost:9090/store/createStore";
         HttpEntity<StoreDetailsModel> entity = new HttpEntity<>(
-                new StoreDetailsModel(request.getStoreName(), request.getCountry(), request.getCity(),
+                new StoreDetailsModel(request.getUserId(), request.getStoreName(), request.getCountry(), request.getCity(),
                         request.getStreet(), request.getZipcode(), request.getAddress(), request.getPhoneNumber())
         );
         restTemplate.postForEntity(URL, entity, StoreDetailsModel.class);
