@@ -82,4 +82,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/getEmailByUserId/{id}")
+    public ResponseEntity<String> getUserEmail(@PathVariable String id) {
+        return ResponseEntity.ok(userService.findUserEmail(id));
+    }
+
+
 }

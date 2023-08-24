@@ -3,13 +3,18 @@ package com.example.MyClientApp.service;
 import com.example.MyClientApp.dto.UserConverter;
 import com.example.MyClientApp.dto.UserDto;
 import com.example.MyClientApp.exception.CustomException;
+import com.example.MyClientApp.model.BasketModel;
 import com.example.MyClientApp.model.Role;
+import com.example.MyClientApp.model.StoreDetailsModel;
 import com.example.MyClientApp.model.User;
 import com.example.MyClientApp.repository.UserRepository;
 import com.example.MyClientApp.request.*;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,8 +59,23 @@ public class UserService {
                 .role(Role.CUSTOMER)
                 .build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(user);
+        User fromDb = userRepository.save(user);
+        BasketModel basketModel = BasketModel.builder()
+                .id(fromDb.getId())
+                .build();
+        createBasket(basketModel);
     }
+
+    @Transactional
+    public void createBasket(BasketModel request) {
+        RestTemplate restTemplate = new RestTemplate();
+        final String URL = "http://localhost:9090/check-out/createBasket";
+        HttpEntity<BasketModel> entity = new HttpEntity<>(
+                new BasketModel(request.getId())
+        );
+        restTemplate.postForEntity(URL, entity, BasketModel.class);
+    }
+
 
     @Transactional
     public UserDto updateUser(UserRequest userRequest) {
@@ -124,6 +144,11 @@ public class UserService {
         String username = getLoggedInUsername();
         return userRepository.findUserByUsername(username).orElseThrow(
                 () -> new CustomException(USERNAME_NOT_FOUND + username, "username"));
+    }
+
+    public String findUserEmail(String id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return user.getEmail();
     }
 
 }
