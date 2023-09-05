@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  user_auth_service_provider:
+    container_name: user_auth_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql_provider_user:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    ports:
+      - "9091:9091"
+#    restart: unless-stopped
+
+  postgresql_provider_user:
+    image: postgres:latest
+    container_name: postgresql_provider_user
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_provider_management_service:/var/lib/postgresql/data
+#    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+volumes:
+  db_provider_management_service:
+    driver: local
